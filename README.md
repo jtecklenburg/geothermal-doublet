@@ -25,7 +25,3 @@ Please cite the following references when using these notebooks:
 
 - Schulz, R. (1987). Analytical model calculations for heat exchange in a confined aquifer. *Journal of Geophysics*, 61, 12–20.  
 - Charbeneau, R. J. (2000). *Groundwater Hydraulics and Pollutant Transport*. Prentice Hall, Upper Saddle River.  
-
-## License
-
-This repository is licensed under the MIT License. See the LICENSE file for details.
