@@ -1,4 +1,6 @@
 # Analytical Models for Heat Transport in Confined Aquifers with Geothermal Applications
+![GitHub License](https://img.shields.io/github/license/jtecklenburg/geothermal-doublet) [![https://doi.org/10.25928/5d1n-5b10](https://img.shields.io/badge/DOI-10.25928%2F5d1n-5b10?color=blue)](https://doi.org/10.25928/5d1n-5b10)
+
 ## Overview
 
 This repository contains Jupyter notebooks implementing analytical models for heat transport in confined aquifers. The notebooks cover solutions for geothermal doublet systems, combining advective heat transport within the aquifer and conductive heat exchange with surrounding layers. These models address scenarios both with and without regional groundwater flow and serve as lightweight benchmarks for more complex numerical simulations.
