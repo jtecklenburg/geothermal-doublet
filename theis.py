@@ -387,3 +387,60 @@ if __name__ == "__main__":
     plt.grid(True, which="both", ls=":")
     plt.tight_layout()
     plt.show()
+
+
+def doublet_pressure(x, y,
+                     Q, M, k_f, a,
+                     rho_F=1000.0, g=9.81,
+                     v0=0.0, alpha=0.0,
+                     p_ref=0.0):
+    """
+    Hydraulic pressure in a confined aquifer due to a doublet system
+    (injection well at (-a, 0), extraction well at (a, 0))
+    plus a uniform background flow v0 at azimuth alpha.
+
+    Parameters
+    ----------
+    x, y    : float or ndarray  Coordinates [m]
+    Q       : float             Injection/extraction rate [m^3/s]
+    M       : float             Aquifer thickness [m]
+    k_f     : float             Hydraulic conductivity [m/s]
+    a       : float             Half-distance between wells [m]
+    rho_F   : float             Fluid density [kg/m^3], default 1000
+    g       : float             Gravitational acceleration [m/s^2], default 9.81
+    v0      : float             Natural background Darcy velocity [m/s], default 0
+    alpha   : float             Azimuth of background flow [rad], default 0
+    p_ref   : float             Reference pressure at (0, 0) [Pa], default 0
+
+    Returns
+    -------
+    p       : float or ndarray  Pressure [Pa]
+
+    Notes
+    -----
+    The velocity potential is:
+        Phi(x, y) = -(v0/k_f) * (x*cos(alpha) + y*sin(alpha))
+                    - Q / (4*pi*T_r) * ln( ((x+a)^2 + y^2) / ((x-a)^2 + y^2) )
+    with transmissivity T_r = k_f * M.
+
+    For a horizontal aquifer (z = const), the pressure follows from:
+        p = rho_F * g * Phi + const
+
+    The additive constant is set so that p = p_ref at (x, y) = (0, 0).
+    Points coinciding with the well locations (x = +-a, y = 0) are
+    singular (logarithmic divergence) and will return +-inf.
+    """
+    T_r = k_f * M
+
+    # Distances squared to injection (-a,0) and extraction (+a,0)
+    r_inj2 = (x + a)**2 + y**2   # distance^2 to injection well
+    r_ext2 = (x - a)**2 + y**2   # distance^2 to extraction well
+
+    # Velocity potential (Eq. 13 in Schulz 1987)
+    Phi = (- (v0 / k_f) * (x * np.cos(alpha) + y * np.sin(alpha))
+           - Q / (4 * np.pi * T_r) * np.log(r_inj2 / r_ext2))
+
+    # Pressure from velocity potential
+    p = rho_F * g * Phi + p_ref
+
+    return p
